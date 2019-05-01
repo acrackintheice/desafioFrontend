@@ -8,23 +8,33 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img src="/desafioFrontend/image/example-icon.png" width="30" height="30" alt="">
+            Desafio Front-End - Github Search
+        </a>
+    </nav>
     <div class="container-fluid ">
         <div class="row">
             <div class="col">
             </div>
             <div class="col-10">
                 <div class="search-div">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-primary my-2 my-sm-0" type="button"> Pesquisar usuário </button>
+                    <div class="input-group mb-3 mt-3">
+                        <input type="text" class="form-control" placeholder="Nome do usuário do Github"
+                            aria-label="Nome do usuário do Github" aria-describedby="button-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-dark" type="button" id="button-addon2">Buscar</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="card user-detail-div">
+                <div class="card user-detail-div mb-3">
                     <div class="card-header">
-                        Featured
+                        Detalhes do Usuário
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">Special title treatment</h5>
                         <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
                     </div>
                 </div>
                 <div class="repo-list-div">
@@ -36,16 +46,6 @@
                         <li class="list-group-item">Repository N</li>
                     </ul>
                 </div>
-
-                <div class="alert alert-primary" role="alert">
-                    Hello! Bootstrap is Working now
-                </div>
-
-                <br />
-                <br />
-                <button type="button" onclick="sillyAlert();" class="btn btn-outline-primary"> Silly! </button>
-                <br />
-                <br />
             </div>
             <div class="col">
             </div>
