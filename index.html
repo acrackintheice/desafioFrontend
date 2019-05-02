@@ -8,10 +8,243 @@
 </head>
 
 <body>
+    <style>
+        .user-detail-div {
+            border: 1px solid rgba(0, 0, 0, .15);
+            border-radius: 4px;
+        }
+
+        .bio-div {
+            padding: 8px;
+        }
+
+        .user-detail-many-div {
+            border-bottom: 1px solid rgba(0, 0, 0, .15);
+            border-bottom-width: 1px;
+            border-bottom-style: solid;
+            border-bottom-color: rgba(0, 0, 0, 0.15);
+            padding: 4px 8px 8px 8px;
+        }
+
+        .user-detail-many-content-div {
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+        }
+
+        .ornament-div {
+            height: 30px;
+            border-bottom: 1px solid rgba(0, 0, 0, .15);
+            padding: 8px;
+            line-height: 1.4rem;
+            background: #f3f7f7;
+        }
+
+        .avatar-img-div {
+            padding: 4px;
+        }
+
+        .avatar-img-div>img {
+            border: 1px solid transparent;
+            border-radius: 4px;
+            height: 122px;
+            width: 122px;
+        }
+
+        .name {
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 1.2;
+        }
+
+        .mail {
+            color: rgba(0, 0, 0, .8);
+            font-size: 16px;
+            line-height: 1.4;
+        }
+
+        .login {
+            color: rgba(0, 0, 0, .6);
+            font-size: 16px;
+            line-height: 1.2;
+        }
+
+        .bio-div {
+            font-weight: 700;
+            font-size: 16px;
+            color: rgba(0, 0, 0, .8);
+            background: #f3f7f7;
+        }
+
+        .about-text-div {
+            font-size: 14px;
+            line-height: 1.2;
+            font-weight: 400;
+        }
+
+        .repo-list-item-div {
+            display: flex;
+            justify-content: space-between;
+            align-content: center;
+            align-items: center;
+        }
+    </style>
+
+    <script>
+        var routes = {};
+        var templates = {};
+
+        function route(path, template) {
+            routes[path] = { template: template };
+        }
+
+        function template(name, builders) {
+            templates[name] = builders;
+        }
+
+        function router() {
+            let element = document.getElementById('router-div');
+            let hash = location.hash
+            let url = hash.slice(1) || '/';
+            let route = routes[url];
+            if (element) {
+                element.innerHTML = ""
+                let builders = templates[route.template]
+                builders.forEach(builder => {
+                    builder().then((content) => element.innerHTML = element.innerHTML + content)
+                });
+            }
+        }
+
+        template('home', [() => {
+            return new Promise((resolve) => {
+                resolve(`
+                <div class="card user-detail-div mb-3">
+                    <div class="card-header">
+                        Informações
+                        </div>
+                    <div class="card-body">
+                        <p class="card-text"> Procure por usuários do Github no componente de pesquisa acima </p>
+                    </div>
+                </div>
+                `)
+            })
+        }]);
+        template('repo', [() => {
+            return new Promise((resolve) => resolve(`
+                <h1> This is a repository </h1>
+                `
+            ))
+        }]);
+
+        template('user',
+            [() => {
+                return fetchGithubUser('acrackintheice')
+                    .then((user) => {
+                        return `
+                                        <div class="user-detail-div mb-3 ">
+                                            <div class="container-fluid">
+                                                <div class="row ornament-div">
+                                                </div>
+                                                <div class="row user-detail-many-div">
+                                                    <div class="avatar-img-div centered">
+                                                        <img src="${user.avatar_url || ""}"/>
+                                                    </div>
+                                                    <div class="user-detail-many-content-div">
+                                                        <div class="top">
+                                                            <div class="name mt-1">${user.name || "Username Missing"}</div>
+                                                            <div class="login">${user.login}@github.com </div>
+                                                            <div class="mail">(${user.email || "email indisponível"})</div>
+                                                        </div>
+                                                        <div class="bottom">
+                                                            <div class="follow-div">
+                                                                <span class="badge badge-primary badge-pill">Followers ${user.followers || "0"}</span>
+                                                                <span class="badge badge-primary badge-pill">Following ${user.following || ""}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row bio-div">
+                                                    <div class="container-fluid ">
+                                                        <div class="about-header-div row" > Sobre (bio) </div>
+                                                        <div class="about-text-div row">${user.bio || "Nenhuma informação disponível"}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `
+                    })
+            },
+            () => {
+                return fetchGithubUserRepos('acrackintheice')
+                    .then((repos) => {
+                        repos.sort((a, b) => parseFloat(b.stargazers_count) - parseFloat(a.stargazers_count))
+                        let component = `
+                        <div class="card">
+                            <div class="card-header">
+                                Repositórios
+                            </div>
+                            <div class="card-body">
+                            
+                        <ul class='list-group repo-list'>
+                        `
+                        for (const repo of repos) {
+                            component = component + `
+                                <li class="list-group-item mb-2">
+                                    <div class="repo-list-item-div">
+                                        <div class="repo-name-div">
+                                            ${repo.name}
+                                        </div>
+                                        <div class="repo-details-div">
+                                            <a href="#/repo">Detalhes</a>
+                                        </div>
+                                    </div>
+                                </li>
+                            `
+                        }
+                        component = component + ` 
+                                    </ul>
+                                </div>
+                            </div> `
+                        return component
+                    })
+            }]
+        )
+
+        route('/', 'home');
+        route('/home', 'home');
+        route('/repo', 'repo');
+        route('/user', 'user');
+
+        window.addEventListener('load', router);
+        window.addEventListener('hashchange', router);
+
+
+        async function fetchGithubUser(username) {
+            const response = await fetch('https://api.github.com/users/' + username);
+            const user = await response.json();
+            return user;
+        }
+
+        async function fetchGithubUserRepos(username) {
+            const response = await fetch('https://api.github.com/users/' + username + '/repos');
+            const repos = await response.json();
+            return repos;
+        }
+
+        async function fetchGithubRepo(reponame) {
+            const response = await fetch('https://api.github.com/repos/' + reponame);
+            const repo = await response.json();
+            return repo;
+        }
+
+    </script>
+
+
     <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand my-navbar"href="#/home">
             <img src="/desafioFrontend/image/example-icon.png" width="30" height="30" alt="">
-            Desafio Front-End - Github Search
+            Home
         </a>
     </nav>
     <div class="container-fluid ">
@@ -19,7 +252,6 @@
             <div class="col">
                 <ul>
                     <li><a href="#/home">Home</a></li>
-                    <li><a href="#/repo">Page 1</a></li>
                     <li><a href="#/user">Page 2</a></li>
                 </ul>
             </div>
@@ -29,7 +261,7 @@
                         <input type="text" class="form-control" placeholder="Nome do usuário Github"
                             aria-label="Nome do usuário do Github" aria-describedby="button-addon2">
                         <div class="input-group-append">
-                            <button class="btn btn-outline-dark" type="button" id="button-addon2">Buscar</button>
+                            <button class="btn btn-dark" type="button" id="button-addon2">Buscar</button>
                         </div>
                     </div>
                 </div>
@@ -50,7 +282,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    <script src="/desafioFrontend/js/main.js"></script>
+    <!--   <script src="/desafioFrontend/js/main.js"></script> -->
 </body>
 
 </html>

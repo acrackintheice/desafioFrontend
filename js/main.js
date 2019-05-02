@@ -1,5 +1,5 @@
-let routes = {};
-let templates = {};
+var routes = {};
+var templates = {};
 
 template('home', () => {
     return `
