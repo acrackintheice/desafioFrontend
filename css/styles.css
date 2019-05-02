@@ -1,15 +1,15 @@
-.repo-order-div{
+.repo-order-div {
     display: flex;
     align-items: center;
 }
 
-.repo-card-header{
+.repo-card-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;    
+    align-items: center;
 }
 
-.repo-details-div{
+.repo-details-div {
     display: flex;
 }
 
