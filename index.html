@@ -88,6 +88,14 @@
             align-content: center;
             align-items: center;
         }
+
+        .invalid-user {
+            font-size: 16px;
+            line-height: 1.2;
+            padding: 24px;
+            text-align: center;
+            width: 100%;
+        }
     </style>
 
     <nav class="navbar navbar-light bg-light">
@@ -149,12 +157,18 @@
             if (element) {
                 element.innerHTML = ""
                 let builders = templates[route.template]
+                let lastIndex = -1;
                 builders.forEach(builder => {
                     if (builder.length == 0)
-                        builder().then((content) => element.innerHTML = element.innerHTML + content)
+                        builder().then((content) => {
+
+                        })
                     else
                         if (pathVariable && pathVariable !== '')
-                            builder(pathVariable).then((content) => element.innerHTML = element.innerHTML + content)
+                            if (builders.indexOf(builder) == 0)
+                                builder(pathVariable).then((content) => element.innerHTML = content + element.innerHTML)
+                            else
+                                builder(pathVariable).then((content) => element.innerHTML = element.innerHTML + content)
                 });
             }
         }
@@ -206,18 +220,21 @@
             [(username) => {
                 return fetchGithubUser(username)
                     .then((user) => {
-                        return `
+                        let content = `
                                         <div class="user-detail-div mb-3 ">
                                             <div class="container-fluid">
                                                 <div class="row ornament-div">
                                                 </div>
                                                 <div class="row user-detail-many-div">
+                                `
+                        if (user.login) 
+                            content = content + `
                                                     <div class="avatar-img-div centered">
                                                         <img src="${user.avatar_url || ""}"/>
                                                     </div>
                                                     <div class="user-detail-many-content-div">
                                                         <div class="top">
-                                                            <div class="name mt-1">${user.name || "Username Missing"}</div>
+                                                            <div class="name mt-1">${user.name || "Username indisponível"}</div>
                                                             <div class="login">${user.login}@github.com </div>
                                                             <div class="mail">(${user.email || "email indisponível"})</div>
                                                         </div>
@@ -234,10 +251,17 @@
                                                         <div class="about-header-div row" > Sobre (bio) </div>
                                                         <div class="about-text-div row">${user.bio || "Nenhuma informação disponível"}</div>
                                                     </div>
+                                                    `
+                        else
+                            content = content + `
+                                        <div class="invalid-user mt-1"> Nenhum usuário com o nome <strong>${username}</strong> encontrado. </div>
+                                    `
+                        content = content + `
                                                 </div>
                                             </div>
                                         </div>
-                                            `
+                                    `
+                        return content;
                     })
             },
             (username) => {
