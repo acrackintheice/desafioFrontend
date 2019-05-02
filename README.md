@@ -18,7 +18,7 @@ https://acrackintheice.github.io/desafioFrontend/
 
 ## **Demo** ##
 
-A imagem abaixo exibe a visualização das informaçes de um usurio do Github pela aplicação.
+A imagem abaixo exibe a visualização das informaçes de um usuário do Github pela aplicação.
 
 ![Demo Image](demo.png)
 
