@@ -23,3 +23,7 @@ A imagem abaixo exibe a visualização das informaçes de um usurio do Github pe
 ![Demo Image](demo.png)
 
 Para mais demos acesse a aplicação em: https://acrackintheice.github.io/desafioFrontend/
+
+## **Notas** ##
+
+⋅⋅* Para alterar a ordem da lista de repos foi necessário recriar (e buscar os dados para isso) os componentes pois os componentes não possuem estado.
