@@ -26,4 +26,4 @@ Para mais demos acesse a aplicação em: https://acrackintheice.github.io/desafi
 
 ## **Notas** ##
 
-⋅⋅* Para alterar a ordem da lista de repos foi necessário recriar (e buscar os dados para isso) os componentes pois os componentes não possuem estado.
+* Para alterar a ordem da lista de repos foi necessário recriar (e buscar os dados para isso) os componentes pois os componentes não possuem estado.
