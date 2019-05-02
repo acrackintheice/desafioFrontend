@@ -38,14 +38,14 @@ function router() {
 template('home', [() => {
     return new Promise((resolve) => {
         resolve(`
-                <div class="card user-detail-div mb-3">
-                    <div class="card-header">
-                        </div>
-                    <div class="card-body home-message-div">
-                        <p class="card-text"> Procure por usuários do Github na caixa de pesquisa acima. ! </p>
-                    </div>
+        <div class="card user-detail-div mb-3">
+            <div class="card-header">
                 </div>
-                `)
+            <div class="card-body home-message-div">
+                <p class="card-text"> Procure por usuários do Github na caixa de pesquisa acima. ! </p>
+            </div>
+        </div>
+        `)
     })
 }]);
 
@@ -108,46 +108,46 @@ template('user',
         return fetchGithubUser(username)
             .then((user) => {
                 let content = `
-                                <div class="user-detail-div mb-3 ">
-                                    <div class="container-fluid">
-                                        <div class="row ornament-div">
-                                        </div>
-                        `
+                        <div class="user-detail-div mb-3 ">
+                            <div class="container-fluid">
+                                <div class="row ornament-div">
+                                </div>
+                `
                 if (user.login)
                     content = content + `
-                                        <div class="row user-detail-many-div">
-                                            <div class="avatar-img-div centered">
-                                                <img src="${user.avatar_url || ""}"/>
-                                            </div>
-                                            <div class="user-detail-many-content-div">
-                                                <div class="top">
-                                                    <div class="name mt-1">${user.name || "Username indisponível"}</div>
-                                                    <div class="login">${user.login}@github.com </div>
-                                                    <div class="mail">(${user.email || "email indisponível"})</div>
-                                                </div>
-                                                <div class="bottom">
-                                                    <div class="follow-div">
-                                                        <span class="badge badge-primary badge-pill">Followers ${user.followers || "0"}</span>
-                                                        <span class="badge badge-primary badge-pill">Following ${user.following || "0"}</span>
-                                                    </div>
-                                                </div>
+                                <div class="row user-detail-many-div">
+                                    <div class="avatar-img-div centered">
+                                        <img src="${user.avatar_url || ""}"/>
+                                    </div>
+                                    <div class="user-detail-many-content-div">
+                                        <div class="top">
+                                            <div class="name mt-1">${user.name || "Username indisponível"}</div>
+                                            <div class="login">${user.login}@github.com </div>
+                                            <div class="mail">(${user.email || "email indisponível"})</div>
+                                        </div>
+                                        <div class="bottom">
+                                            <div class="follow-div">
+                                                <span class="badge badge-primary badge-pill">Followers ${user.followers || "0"}</span>
+                                                <span class="badge badge-primary badge-pill">Following ${user.following || "0"}</span>
                                             </div>
                                         </div>
-                                        <div class="row bio-div">
-                                            <div class="container-fluid ">
-                                                <div class="about-header-div row" > Sobre (bio) </div>
-                                                <div class="about-text-div row">${user.bio || "Nenhuma informação disponível"}</div>
-                                            </div>
-                                        </div>
-                                            `
-                else
-                    content = content + `
-                                <div class="invalid-user mt-1"> Nenhum usuário com o nome <strong>${username}</strong> encontrado. </div>
-                            `
-                content = content + `
                                     </div>
                                 </div>
-                            `
+                                <div class="row bio-div">
+                                    <div class="container-fluid ">
+                                        <div class="about-header-div row" > Sobre (bio) </div>
+                                        <div class="about-text-div row">${user.bio || "Nenhuma informação disponível"}</div>
+                                    </div>
+                                </div>
+                                    `
+                else
+                    content = content + `
+                        <div class="invalid-user mt-1"> Nenhum usuário com o nome <strong>${username}</strong> encontrado. </div>
+                    `
+                content = content + `
+                            </div>
+                        </div>
+                    `
                 return content;
             })
     },
@@ -156,32 +156,52 @@ template('user',
             .then((repos) => {
                 repos.sort((a, b) => parseFloat(b.stargazers_count) - parseFloat(a.stargazers_count))
                 let component = `
-                        <div class="card">
-                            <div class="card-header">
-                                Repositórios
-                            </div>
-                            <div class="card-body">
-                            
-                        <ul class='list-group repo-list'>
-                        `
+                <div class="card">
+                    <div class="card-header repo-card-header">
+                        <div>
+                            Repositórios
+                        </div>
+                        <div class="btn-group btn-group-toggle repo-order-div" data-toggle="buttons">
+                            <label class="btn btn-sm btn-secondary active ml-1">
+                                <input type="radio" name="options" id="option1" autocomplete="off" checked> Ascendente
+                            </label>
+                            <label class="btn btn-sm btn-secondary">
+                                <input type="radio" name="options" id="option3" autocomplete="off"> Descendente
+                            </label>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                    
+                <ul class='list-group repo-list'>
+                `
                 for (const repo of repos) {
                     component = component + `
-                                <li class="list-group-item mb-2">
-                                    <div class="repo-list-item-div">
-                                        <div class="repo-name-div">
-                                            ${repo.name}
-                                        </div>
-                                        <div class="repo-details-div">
-                                            <a href="#/repo/${repo.full_name}">Detalhes</a>
-                                        </div>
+                        <li class="list-group-item mb-2">
+                            <div class="repo-list-item-div">
+                                <div class="repo-name-div">
+                                    ${repo.name}
+                                </div>
+                                <div class="repo-details-div">
+                                    <div class="star-count mr-3"> 
+                                        <div class="label-with-count">
+                                            <div class="label-prepend" > 
+                                                <img class="mr-1" src="/desafioFrontend/open-iconic/png/star.png" />  Stars
+                                            </div>
+                                            <div class="count">
+                                                ${repo.stargazers_count || "0"} 
+                                            </div>
+                                        </div>    
                                     </div>
-                                </li>
-                            `
+                                    <button onclick="window.location.href='#/repo/${repo.full_name}'" "type="button" class="btn btn-sm btn-info">Detalhes</button>
+                                </div>
+                            </div>
+                        </li>
+                    `
                 }
                 component = component + ` 
-                                    </ul>
-                                </div>
-                            </div> `
+                            </ul>
+                        </div>
+                    </div> `
                 return component
             })
     }]

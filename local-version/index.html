@@ -9,6 +9,21 @@
 
 <body>
     <style>
+        .repo-order-div{
+            display: flex;
+            align-items: center;
+        }
+
+        .repo-card-header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;    
+        }
+
+        .repo-details-div{
+            display: flex;
+        }
+
         .user-detail-div,
         .repo-detail-div {
             border: 1px solid rgba(0, 0, 0, .15);
@@ -346,8 +361,18 @@
                         repos.sort((a, b) => parseFloat(b.stargazers_count) - parseFloat(a.stargazers_count))
                         let component = `
                         <div class="card">
-                            <div class="card-header">
-                                Repositórios
+                            <div class="card-header repo-card-header">
+                                <div>
+                                    Repositórios
+                                </div>
+                                <div class="btn-group btn-group-toggle repo-order-div" data-toggle="buttons">
+                                    <label class="btn btn-sm btn-secondary active ml-1">
+                                        <input type="radio" name="options" id="option1" autocomplete="off" checked> Ascendente
+                                    </label>
+                                    <label class="btn btn-sm btn-secondary">
+                                        <input type="radio" name="options" id="option3" autocomplete="off"> Descendente
+                                    </label>
+                                </div>
                             </div>
                             <div class="card-body">
                             
@@ -361,7 +386,17 @@
                                             ${repo.name}
                                         </div>
                                         <div class="repo-details-div">
-                                            <a href="#/repo/${repo.full_name}">Detalhes</a>
+                                            <div class="star-count mr-3"> 
+                                                <div class="label-with-count">
+                                                    <div class="label-prepend" > 
+                                                        <img class="mr-1" src="/desafioFrontend/open-iconic/png/star.png" />  Stars
+                                                    </div>
+                                                    <div class="count">
+                                                        ${repo.stargazers_count || "0"} 
+                                                    </div>
+                                                </div>    
+                                            </div>
+                                            <button onclick="window.location.href='#/repo/${repo.full_name}'" "type="button" class="btn btn-sm btn-info">Detalhes</button>
                                         </div>
                                     </div>
                                 </li>
