@@ -1,59 +1,177 @@
 var routes = {};
 var templates = {};
 
-template('home', () => {
-    return `
-            <div class="card user-detail-div mb-3">
-                <div class="card-header">
-                    Informações
-                </div>
-                <div class="card-body">
-                    <p class="card-text"> Procure por usuários do Github no componente de pesquisa acima </p>
-                </div>
-            </div>
-            `
-});
-template('repo', () => {
-    return `<h1> This is a repository </h1>`
-});
-template('user', () => {
-    let user = fetchGithubUser('acrackintheice')
-    return `
-            <div class="card user-detail-div mb-3">
-                <div class="card-header">
-                    Detalhes do Usuário
-                </div>
-                <div class="card-body">
-                    <p class="card-text">${user.name || ""} (${user.login}) </p>
-                    <p class="card-text">${user.email || ""}</p>
-                    <p class="card-text">${user.avatar_url || ""}</p>
-                    <p class="card-text">${user.followers || ""}</p>
-                    <p class="card-text">${user.following || ""}</p>
-                    <p class="card-text">${user.bio || ""}</p>
-                </div>
-            </div>
-            <div class="repo-list-div">
-                <ul class="list-group">
-                    <li class="list-group-item">Repository 1</li>
-                    <li class="list-group-item">Dapibus ac facilisis in</li>
-                    <li class="list-group-item">Morbi leo risus</li>
-                    <li class="list-group-item">Porta ac consectetur ac</li>
-                    <li class="list-group-item">Repository N</li>
-                </ul>
-            </div>
-        `
-});
+function route(path, template) {
+    routes[path] = { template: template };
+}
+
+function template(name, builders) {
+    templates[name] = builders;
+}
 
 function router() {
     let element = document.getElementById('router-div');
-    var url = location.hash.slice(1) || '/';
-    var route = routes[url];
-    if (element && route.controller) {
-        element.innerHTML = templates[route.template]
+    let hash = location.hash
+    let url = "/" + hash.split("/")[1] || '/';
+    let slicedOnce = hash.slice(2)
+    let pathVariable = slicedOnce.slice(slicedOnce.indexOf("/") + 1);
+    let route = routes[url];
+    if (element) {
+        element.innerHTML = ""
+        let builders = templates[route.template]
+        builders.forEach(builder => {
+            if (builder.length == 0)
+                builder().then((content) => builder(pathVariable).then((content) => element.innerHTML = element.innerHTML + content))
+            else
+                if (pathVariable && pathVariable !== '')
+                    if (builders.indexOf(builder) == 0)
+                        builder(pathVariable).then((content) => element.innerHTML = content + element.innerHTML)
+                    else
+                        builder(pathVariable).then((content) => element.innerHTML = element.innerHTML + content)
+        });
     }
 }
 
+template('home', [() => {
+    return new Promise((resolve) => {
+        resolve(`
+                <div class="card user-detail-div mb-3">
+                    <div class="card-header">
+                        </div>
+                    <div class="card-body home-message-div">
+                        <p class="card-text"> Procure por usuários do Github na caixa de pesquisa acima. ! </p>
+                    </div>
+                </div>
+                `)
+    })
+}]);
+
+template('repo', [(repofullname) => {
+    return fetchGithubRepo(repofullname)
+        .then((repo) => {
+            return `
+                    <div class="repo-detail-div mb-3 ">
+                        <div class="container-fluid">
+                            <div class="row ornament-div">
+                                <img src="/open-iconic/svg/info.svg">
+                            </div>
+                            <div class="row repo-many-div">
+                                <div class="repo-detail-content-div">
+                                    <div class="top">
+                                        <div class="mt-1">
+                                            <span class="name">${repo.name  || "Username Missing"}</span>
+                                             - <a href=""${repo.html_url} class="">${repo.html_url || "email indisponível"}</a>
+                                        </div>
+                                    </div>
+                                    <div class="bottom">
+                                        <div class="follow-div">
+                                            <span class="badge badge-info"> <img src="/open-iconic/svg/code.svg"> ${repo.language || ""} </span>
+                                            <span class="badge badge-info"> <img src="/open-iconic/svg/star.svg" > ${repo.stargazers_count || "0"} </span>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row bio-div">
+                                <div class="container-fluid ">
+                                    <div class="about-header-div row" > Descrição </div>
+                                    <div class="about-text-div row">${repo.description || "Nenhuma informação disponível"}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+        })
+}]);
+
+template('user',
+    [(username) => {
+        return fetchGithubUser(username)
+            .then((user) => {
+                let content = `
+                                <div class="user-detail-div mb-3 ">
+                                    <div class="container-fluid">
+                                        <div class="row ornament-div">
+                                            <img src="/open-iconic/svg/info.svg">
+                                        </div>
+                                        <div class="row user-detail-many-div">
+                        `
+                if (user.login)
+                    content = content + `
+                                            <div class="avatar-img-div centered">
+                                                <img src="${user.avatar_url || ""}"/>
+                                            </div>
+                                            <div class="user-detail-many-content-div">
+                                                <div class="top">
+                                                    <div class="name mt-1">${user.name || "Username indisponível"}</div>
+                                                    <div class="login">${user.login}@github.com </div>
+                                                    <div class="mail">(${user.email || "email indisponível"})</div>
+                                                </div>
+                                                <div class="bottom">
+                                                    <div class="follow-div">
+                                                        <span class="badge badge-primary badge-pill">Followers ${user.followers || "0"}</span>
+                                                        <span class="badge badge-primary badge-pill">Following ${user.following || ""}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row bio-div">
+                                            <div class="container-fluid ">
+                                                <div class="about-header-div row" > Sobre (bio) </div>
+                                                <div class="about-text-div row">${user.bio || "Nenhuma informação disponível"}</div>
+                                            </div>
+                                        </div>
+                                            `
+                else
+                    content = content + `
+                                <div class="invalid-user mt-1"> Nenhum usuário com o nome <strong>${username}</strong> encontrado. </div>
+                            `
+                content = content + `
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                return content;
+            })
+    },
+    (username) => {
+        return fetchGithubUserRepos(username)
+            .then((repos) => {
+                repos.sort((a, b) => parseFloat(b.stargazers_count) - parseFloat(a.stargazers_count))
+                let component = `
+                        <div class="card">
+                            <div class="card-header">
+                                Repositórios
+                            </div>
+                            <div class="card-body">
+                            
+                        <ul class='list-group repo-list'>
+                        `
+                for (const repo of repos) {
+                    component = component + `
+                                <li class="list-group-item mb-2">
+                                    <div class="repo-list-item-div">
+                                        <div class="repo-name-div">
+                                            ${repo.name}
+                                        </div>
+                                        <div class="repo-details-div">
+                                            <a href="#/repo/${repo.full_name}">Detalhes</a>
+                                        </div>
+                                    </div>
+                                </li>
+                            `
+                }
+                component = component + ` 
+                                    </ul>
+                                </div>
+                            </div> `
+                return component
+            })
+    }]
+)
+
 route('/', 'home');
+route('/home', 'home');
 route('/repo', 'repo');
 route('/user', 'user');
 
@@ -64,20 +182,30 @@ window.addEventListener('hashchange', router);
 async function fetchGithubUser(username) {
     const response = await fetch('https://api.github.com/users/' + username);
     const user = await response.json();
-    console.log(JSON.stringify(user));
     return user;
 }
 
 async function fetchGithubUserRepos(username) {
     const response = await fetch('https://api.github.com/users/' + username + '/repos');
     const repos = await response.json();
-    console.log(JSON.stringify(repos));
     return repos;
 }
 
-async function fetchGithubRepo(reponame) {
-    const response = await fetch('https://api.github.com/repos/' + reponame);
+async function fetchGithubRepo(repofullname) {
+    const response = await fetch('https://api.github.com/repos/' + repofullname);
     const repo = await response.json();
-    console.log(JSON.stringify(repo));
     return repo;
 }
+
+function handleUserSearch() {
+    window.location.href = "#/user/" + $('#username-input').val();
+}
+
+$(document).ready(function () {
+    $('#username-input').on('keypress', (event) => {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode == '13') {
+            $('#user-search-button').click()
+        }
+    });
+});

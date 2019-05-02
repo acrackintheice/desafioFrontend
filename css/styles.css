@@ -1,3 +1,93 @@
-.avatar-img-div > img{
-    border-radius: 50%;
+.user-detail-div,
+.repo-detail-div {
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: 4px;
+}
+
+.bio-div {
+    padding: 8px;
+}
+
+.user-detail-many-div,
+.repo-detail-content-div {
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgba(0, 0, 0, 0.15);
+    padding: 4px 8px 8px 8px;
+}
+
+.user-detail-many-content-div {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.ornament-div {
+    height: 30px;
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
+    padding: 8px;
+    line-height: 1.4rem;
+    background: rgba(0, 0, 0, .03);
+}
+
+.avatar-img-div {
+    padding: 4px;
+}
+
+.avatar-img-div>img {
+    border: 1px solid transparent;
+    border-radius: 4px;
+    height: 122px;
+    width: 122px;
+}
+
+.name {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1.2;
+}
+
+.mail {
+    color: rgba(0, 0, 0, .8);
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.login {
+    color: rgba(0, 0, 0, .6);
+    font-size: 16px;
+    line-height: 1.2;
+}
+
+.bio-div {
+    font-weight: 700;
+    font-size: 16px;
+    color: rgba(0, 0, 0, .8);
+    background: rgba(0, 0, 0, .03);
+}
+
+.about-text-div {
+    font-size: 14px;
+    line-height: 1.2;
+    font-weight: 400;
+}
+
+.repo-list-item-div {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+}
+
+.invalid-user {
+    font-size: 16px;
+    line-height: 1.2;
+    padding: 24px;
+    text-align: center;
+    width: 100%;
+}
+
+.home-message-div {
+    text-align: center;
 }
