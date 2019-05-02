@@ -56,20 +56,20 @@ template('repo', [(repofullname) => {
                     <div class="repo-detail-div mb-3 ">
                         <div class="container-fluid">
                             <div class="row ornament-div">
-                                <img src="/desafioFrontend/open-iconic/svg/info.svg" />
+                                <img src="/desafioFrontend/open-iconic/png/info-3x.png" />
                             </div>
                             <div class="row repo-many-div">
                                 <div class="repo-detail-content-div">
                                     <div class="top">
                                         <div class="mt-1">
-                                            <span class="name">${repo.name  || "Username Missing"}</span>
+                                            <span class="name">${repo.name || "Username Missing"}</span>
                                              - <a href=""${repo.html_url} class="">${repo.html_url || "email indisponível"}</a>
                                         </div>
                                     </div>
                                     <div class="bottom">
                                         <div class="follow-div">
-                                            <span class="badge badge-info"> <img src="/desafioFrontend/open-iconic/svg/code.svg" /> ${repo.language || ""} </span>
-                                            <span class="badge badge-info"> <img src="/desafioFrontend/open-iconic/svg/star.svg" /> ${repo.stargazers_count || "0"} </span>
+                                            <span class="badge badge-info"> <img src="/desafioFrontend/open-iconic/png/code-2x.png" /> ${repo.language || ""} </span>
+                                            <span class="badge badge-info"> <img src="/desafioFrontend/open-iconic/png/star-2x.png" /> ${repo.stargazers_count || "0"} </span>
                                             
                                         </div>
                                     </div>
@@ -95,12 +95,12 @@ template('user',
                                 <div class="user-detail-div mb-3 ">
                                     <div class="container-fluid">
                                         <div class="row ornament-div">
-                                            <img src="/desafioFrontend/open-iconic/svg/info.svg">
+                                            <img src="/desafioFrontend/open-iconic/png/info-3x.png">
                                         </div>
-                                        <div class="row user-detail-many-div">
                         `
                 if (user.login)
                     content = content + `
+                                        <div class="row user-detail-many-div">
                                             <div class="avatar-img-div centered">
                                                 <img src="${user.avatar_url || ""}"/>
                                             </div>
@@ -130,7 +130,6 @@ template('user',
                                 <div class="invalid-user mt-1"> Nenhum usuário com o nome <strong>${username}</strong> encontrado. </div>
                             `
                 content = content + `
-                                        </div>
                                     </div>
                                 </div>
                             `
