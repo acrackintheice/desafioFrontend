@@ -1,5 +1,19 @@
 # Desafio Front-End
 
+### **Instalação** ###
+
+* **Execução Local**
+Para executar a aplicação localmente basta clonar este repositório:
+
+https://github.com/acrackintheice/desafioFrontend
+
+* **Inovação tecnológica**: Avalia o uso de tecnologias mais recentes, como novas características ES6 da linguagem;
+* **Coerência**: Avalia se os requisitos foram atendidos;
+* **Boas práticas**: Avalia se o projeto segue boas práticas de desenvolvimento, incluindo segurança e otimização;
+
+
+# Enunciado do Desafio
+
 **Proposta:**  
 Implementar uma aplicação client-side, que consulte a API do GitHub e mostre os repositórios mais populares de um determinado usuário. Esta aplicação deve funcionar nos navegadores mais recentes do mercado.
 
