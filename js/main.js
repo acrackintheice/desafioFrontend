@@ -12,7 +12,10 @@ function template(name, builders) {
 function router() {
     let element = document.getElementById('router-div');
     let hash = location.hash
-    let url = "/" + hash.split("/")[1] || '/';
+    let url = location.hash.slice(1) || '/';
+    let indexOfSecond = url.indexOf("/", url.indexOf("/") + 1)
+    if (indexOfSecond !== -1)
+        url = url.slice(0, url.indexOf("/", url.indexOf("/") + 1))
     let slicedOnce = hash.slice(2)
     let pathVariable = slicedOnce.slice(slicedOnce.indexOf("/") + 1);
     let route = routes[url];
@@ -21,7 +24,7 @@ function router() {
         let builders = templates[route.template]
         builders.forEach(builder => {
             if (builder.length == 0)
-                builder().then(() => builder(pathVariable).then((content) => element.innerHTML = element.innerHTML + content))
+                builder().then((content) => builder(pathVariable).then((content) => element.innerHTML = element.innerHTML + content))
             else
                 if (pathVariable && pathVariable !== '')
                     if (builders.indexOf(builder) == 0)
