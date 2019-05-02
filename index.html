@@ -9,7 +9,8 @@
 
 <body>
     <style>
-        .user-detail-div {
+        .user-detail-div,
+        .repo-detail-div {
             border: 1px solid rgba(0, 0, 0, .15);
             border-radius: 4px;
         }
@@ -18,7 +19,8 @@
             padding: 8px;
         }
 
-        .user-detail-many-div {
+        .user-detail-many-div,
+        .repo-detail-content-div {
             border-bottom: 1px solid rgba(0, 0, 0, .15);
             border-bottom-width: 1px;
             border-bottom-style: solid;
@@ -97,8 +99,8 @@
             width: 100%;
         }
 
-        .home-message-div{
-            text-align: center;    
+        .home-message-div {
+            text-align: center;
         }
     </style>
 
@@ -193,23 +195,32 @@
             return fetchGithubRepo(repofullname)
                 .then((repo) => {
                     return `
-                            <div class="user-detail-div mb-3 ">
+                            <div class="repo-detail-div mb-3 ">
                                 <div class="container-fluid">
                                     <div class="row ornament-div">
+                                        <img src="/open-iconic/svg/info.svg">
                                     </div>
-                                    <div class="row user-detail-many-div">
-                                        <div class="user-detail-many-content-div">
+                                    <div class="row repo-many-div">
+                                        <div class="repo-detail-content-div">
                                             <div class="top">
-                                                <div class="name mt-1">${repo.name || "Username Missing"}</div>
-                                                <div class="login">${repo.description || "Descrição do indisponível"} </div>
-                                                <div class="mail">(${repo.html_url || "email indisponível"})</div>
+                                                <div class="mt-1">
+                                                    <span class="name">${repo.name  || "Username Missing"}</span>
+                                                     - <a href=""${repo.html_url} class="">${repo.html_url || "email indisponível"}</a>
+                                                </div>
                                             </div>
                                             <div class="bottom">
                                                 <div class="follow-div">
-                                                    <span class="badge badge-primary badge-pill">Followers ${repo.stargazers_count || "0"}</span>
-                                                    <span class="badge badge-primary badge-pill">Following ${repo.language || ""}</span>
+                                                    <span class="badge badge-info"> <img src="/open-iconic/svg/code.svg"> ${repo.language || ""} </span>
+                                                    <span class="badge badge-info"> <img src="/open-iconic/svg/star.svg" > ${repo.stargazers_count || "0"} </span>
+                                                    
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="row bio-div">
+                                        <div class="container-fluid ">
+                                            <div class="about-header-div row" > Descrição </div>
+                                            <div class="about-text-div row">${repo.description || "Nenhuma informação disponível"}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -226,6 +237,7 @@
                                         <div class="user-detail-div mb-3 ">
                                             <div class="container-fluid">
                                                 <div class="row ornament-div">
+                                                    <img src="/open-iconic/svg/info.svg">
                                                 </div>
                                                 <div class="row user-detail-many-div">
                                 `
@@ -253,6 +265,7 @@
                                                         <div class="about-header-div row" > Sobre (bio) </div>
                                                         <div class="about-text-div row">${user.bio || "Nenhuma informação disponível"}</div>
                                                     </div>
+                                                </div>
                                                     `
                         else
                             content = content + `
