@@ -21,7 +21,7 @@ function router() {
         let builders = templates[route.template]
         builders.forEach(builder => {
             if (builder.length == 0)
-                builder().then(() => builder(pathVariable).then(() => element.innerHTML = element.innerHTML + content))
+                builder().then(() => builder(pathVariable).then((content) => element.innerHTML = element.innerHTML + content))
             else
                 if (pathVariable && pathVariable !== '')
                     if (builders.indexOf(builder) == 0)
@@ -53,7 +53,7 @@ template('repo', [(repofullname) => {
                     <div class="repo-detail-div mb-3 ">
                         <div class="container-fluid">
                             <div class="row ornament-div">
-                                <img src="/desafioFrontend/open-iconic/svg/info.svg">
+                                <img src="/desafioFrontend/open-iconic/svg/info.svg" />
                             </div>
                             <div class="row repo-many-div">
                                 <div class="repo-detail-content-div">
@@ -65,8 +65,8 @@ template('repo', [(repofullname) => {
                                     </div>
                                     <div class="bottom">
                                         <div class="follow-div">
-                                            <span class="badge badge-info"> <img src="/desafioFrontend/open-iconic/svg/code.svg"> ${repo.language || ""} </span>
-                                            <span class="badge badge-info"> <img src="/desafioFrontend/open-iconic/svg/star.svg" > ${repo.stargazers_count || "0"} </span>
+                                            <span class="badge badge-info"> <img src="/desafioFrontend/open-iconic/svg/code.svg" /> ${repo.language || ""} </span>
+                                            <span class="badge badge-info"> <img src="/desafioFrontend/open-iconic/svg/star.svg" /> ${repo.stargazers_count || "0"} </span>
                                             
                                         </div>
                                     </div>
