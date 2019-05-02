@@ -28,6 +28,13 @@
             padding: 4px 8px 8px 8px;
         }
 
+        .repo-detail-content-div {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 8px 8px 8px 8px;
+        }
+
         .user-detail-many-content-div {
             display: flex;
             justify-content: space-between;
@@ -101,6 +108,38 @@
 
         .home-message-div {
             text-align: center;
+        }
+
+        .repo-lang-star{
+            display: flex;
+        }
+
+        .label-with-count{
+            display: flex;
+            border: 1px solid rgba(27,31,35,.2);
+            border-radius: 4px;
+            font-size: 12px;
+            align-items: center;
+        }
+
+        .label-prepend{
+            display: flex;
+            align-items: center;
+            background-color: #eff3f6;
+            background-image: linear-gradient(-180deg,#fafbfc,#eff3f6 90%);
+            color: #24292e;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-right: 1px solid rgba(27,31,35,.2);
+        }
+
+        .count{
+            padding: 3px 10px;
+        }
+
+        .language-badge{
+            display: flex;
+            align-items: center;
         }
     </style>
 
@@ -181,8 +220,8 @@
         }
 
         template('home', [() => {
-    return new Promise((resolve) => {
-        resolve(`
+            return new Promise((resolve) => {
+                resolve(`
                 <div class="card user-detail-div mb-3">
                     <div class="card-header">
                         </div>
@@ -191,31 +230,47 @@
                     </div>
                 </div>
                 `)
-    })
-}]);
+            })
+        }]);
 
-template('repo', [(repofullname) => {
-    return fetchGithubRepo(repofullname)
-        .then((repo) => {
-            return `
+        template('repo', [(repofullname) => {
+            return fetchGithubRepo(repofullname)
+                .then((repo) => {
+                    return `
                     <div class="repo-detail-div mb-3 ">
                         <div class="container-fluid">
                             <div class="row ornament-div">
-                                <img src="/desafioFrontend/open-iconic/png/info-3x.png" />
                             </div>
                             <div class="row repo-many-div">
                                 <div class="repo-detail-content-div">
-                                    <div class="top">
+                                    <div class="left">
                                         <div class="mt-1">
-                                            <span class="name">${repo.name  || "Username Missing"}</span>
+                                            <span class="name">${repo.name || "Username Missing"}</span>
                                              - <a href=""${repo.html_url} class="">${repo.html_url || "email indisponível"}</a>
                                         </div>
                                     </div>
-                                    <div class="bottom">
-                                        <div class="follow-div">
-                                            <span class="badge badge-info"> <img src="/desafioFrontend/open-iconic/png/code-2x.png" /> ${repo.language || ""} </span>
-                                            <span class="badge badge-info"> <img src="/desafioFrontend/open-iconic/png/star-2x.png" /> ${repo.stargazers_count || "0"} </span>
-                                            
+                                    <div class="right ml-1">
+                                        <div class="repo-lang-star">
+                                            <div class="language mr-1"> 
+                                                <div class="label-with-count">
+                                                    <div class="label-prepend" > 
+                                                        <img class="mr-1" src="/desafioFrontend/open-iconic/png/code.png" />  Lang
+                                                    </div>
+                                                    <div class="count">
+                                                            ${repo.language || ""}  
+                                                    </div>
+                                                </div>    
+                                            </div>
+                                            <div class="star-count"> 
+                                                <div class="label-with-count">
+                                                    <div class="label-prepend" > 
+                                                        <img class="mr-1" src="/desafioFrontend/open-iconic/png/star.png" />  Stars
+                                                    </div>
+                                                    <div class="count">
+                                                        ${repo.stargazers_count || "0"} 
+                                                    </div>
+                                                </div>    
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -229,23 +284,22 @@ template('repo', [(repofullname) => {
                         </div>
                     </div>
                 `
-        })
-}]);
+                })
+        }]);
 
-template('user',
-    [(username) => {
-        return fetchGithubUser(username)
-            .then((user) => {
-                let content = `
+        template('user',
+            [(username) => {
+                return fetchGithubUser(username)
+                    .then((user) => {
+                        let content = `
                                 <div class="user-detail-div mb-3 ">
                                     <div class="container-fluid">
                                         <div class="row ornament-div">
-                                            <img src="/desafioFrontend/open-iconic/png/info-3x.png">
                                         </div>
-                                        <div class="row user-detail-many-div">
                         `
-                if (user.login)
-                    content = content + `
+                        if (user.login)
+                            content = content + `
+                                        <div class="row user-detail-many-div">
                                             <div class="avatar-img-div centered">
                                                 <img src="${user.avatar_url || ""}"/>
                                             </div>
@@ -270,23 +324,22 @@ template('user',
                                             </div>
                                         </div>
                                             `
-                else
-                    content = content + `
+                        else
+                            content = content + `
                                 <div class="invalid-user mt-1"> Nenhum usuário com o nome <strong>${username}</strong> encontrado. </div>
                             `
-                content = content + `
-                                        </div>
+                        content = content + `
                                     </div>
                                 </div>
                             `
-                return content;
-            })
-    },
-    (username) => {
-        return fetchGithubUserRepos(username)
-            .then((repos) => {
-                repos.sort((a, b) => parseFloat(b.stargazers_count) - parseFloat(a.stargazers_count))
-                let component = `
+                        return content;
+                    })
+            },
+            (username) => {
+                return fetchGithubUserRepos(username)
+                    .then((repos) => {
+                        repos.sort((a, b) => parseFloat(b.stargazers_count) - parseFloat(a.stargazers_count))
+                        let component = `
                         <div class="card">
                             <div class="card-header">
                                 Repositórios
@@ -295,8 +348,8 @@ template('user',
                             
                         <ul class='list-group repo-list'>
                         `
-                for (const repo of repos) {
-                    component = component + `
+                        for (const repo of repos) {
+                            component = component + `
                                 <li class="list-group-item mb-2">
                                     <div class="repo-list-item-div">
                                         <div class="repo-name-div">
@@ -308,15 +361,15 @@ template('user',
                                     </div>
                                 </li>
                             `
-                }
-                component = component + ` 
+                        }
+                        component = component + ` 
                                     </ul>
                                 </div>
                             </div> `
-                return component
-            })
-    }]
-)
+                        return component
+                    })
+            }]
+        )
 
         route('/', 'home');
         route('/home', 'home');

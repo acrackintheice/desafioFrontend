@@ -53,37 +53,53 @@ template('repo', [(repofullname) => {
     return fetchGithubRepo(repofullname)
         .then((repo) => {
             return `
-                    <div class="repo-detail-div mb-3 ">
-                        <div class="container-fluid">
-                            <div class="row ornament-div">
-                                <img src="/desafioFrontend/open-iconic/png/info-3x.png" />
-                            </div>
-                            <div class="row repo-many-div">
-                                <div class="repo-detail-content-div">
-                                    <div class="top">
-                                        <div class="mt-1">
-                                            <span class="name">${repo.name || "Username Missing"}</span>
-                                             - <a href=""${repo.html_url} class="">${repo.html_url || "email indisponível"}</a>
-                                        </div>
-                                    </div>
-                                    <div class="bottom">
-                                        <div class="follow-div">
-                                            <span class="badge badge-info"> <img src="/desafioFrontend/open-iconic/png/code-2x.png" /> ${repo.language || ""} </span>
-                                            <span class="badge badge-info"> <img src="/desafioFrontend/open-iconic/png/star-2x.png" /> ${repo.stargazers_count || "0"} </span>
-                                            
-                                        </div>
-                                    </div>
+            <div class="repo-detail-div mb-3 ">
+                <div class="container-fluid">
+                    <div class="row ornament-div">
+                    </div>
+                    <div class="row repo-many-div">
+                        <div class="repo-detail-content-div">
+                            <div class="left">
+                                <div class="mt-1">
+                                    <span class="name">${repo.name || "Username Missing"}</span>
+                                     - <a href=""${repo.html_url} class="">${repo.html_url || "email indisponível"}</a>
                                 </div>
                             </div>
-                            <div class="row bio-div">
-                                <div class="container-fluid ">
-                                    <div class="about-header-div row" > Descrição </div>
-                                    <div class="about-text-div row">${repo.description || "Nenhuma informação disponível"}</div>
+                            <div class="right ml-1">
+                                <div class="repo-lang-star">
+                                    <div class="language mr-1"> 
+                                        <div class="label-with-count">
+                                            <div class="label-prepend" > 
+                                                <img class="mr-1" src="/desafioFrontend/open-iconic/png/code.png" />  Lang
+                                            </div>
+                                            <div class="count">
+                                                    ${repo.language || ""}  
+                                            </div>
+                                        </div>    
+                                    </div>
+                                    <div class="star-count"> 
+                                        <div class="label-with-count">
+                                            <div class="label-prepend" > 
+                                                <img class="mr-1" src="/desafioFrontend/open-iconic/png/star.png" />  Stars
+                                            </div>
+                                            <div class="count">
+                                                ${repo.stargazers_count || "0"} 
+                                            </div>
+                                        </div>    
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                `
+                    <div class="row bio-div">
+                        <div class="container-fluid ">
+                            <div class="about-header-div row" > Descrição </div>
+                            <div class="about-text-div row">${repo.description || "Nenhuma informação disponível"}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `
         })
 }]);
 
@@ -95,7 +111,6 @@ template('user',
                                 <div class="user-detail-div mb-3 ">
                                     <div class="container-fluid">
                                         <div class="row ornament-div">
-                                            <img src="/desafioFrontend/open-iconic/png/info-3x.png">
                                         </div>
                         `
                 if (user.login)

@@ -1,3 +1,4 @@
+<style>
 .user-detail-div,
 .repo-detail-div {
     border: 1px solid rgba(0, 0, 0, .15);
@@ -15,6 +16,13 @@
     border-bottom-style: solid;
     border-bottom-color: rgba(0, 0, 0, 0.15);
     padding: 4px 8px 8px 8px;
+}
+
+.repo-detail-content-div {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 8px 8px 8px 8px;
 }
 
 .user-detail-many-content-div {
@@ -90,4 +98,36 @@
 
 .home-message-div {
     text-align: center;
+}
+
+.repo-lang-star{
+    display: flex;
+}
+
+.label-with-count{
+    display: flex;
+    border: 1px solid rgba(27,31,35,.2);
+    border-radius: 4px;
+    font-size: 12px;
+    align-items: center;
+}
+
+.label-prepend{
+    display: flex;
+    align-items: center;
+    background-color: #eff3f6;
+    background-image: linear-gradient(-180deg,#fafbfc,#eff3f6 90%);
+    color: #24292e;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-right: 1px solid rgba(27,31,35,.2);
+}
+
+.count{
+    padding: 3px 10px;
+}
+
+.language-badge{
+    display: flex;
+    align-items: center;
 }
