@@ -62,7 +62,7 @@ template('repo', [(repofullname) => {
                             <div class="left">
                                 <div class="mt-1">
                                     <span class="name">${repo.name || "Username Missing"}</span>
-                                     - <a href=""${repo.html_url} class="">${repo.html_url || "email indisponível"}</a>
+                                     - <a href="${repo.html_url}" class="">${repo.html_url || "email indisponível"}</a>
                                 </div>
                             </div>
                             <div class="right ml-1">
